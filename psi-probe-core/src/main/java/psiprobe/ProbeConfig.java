@@ -52,6 +52,8 @@ import psiprobe.beans.LogResolverBean;
 import psiprobe.beans.ResourceResolver;
 import psiprobe.beans.ResourceResolverBean;
 import psiprobe.beans.RuntimeInfoAccessorBean;
+import psiprobe.controllers.dashboard.DashboardAjaxController;
+import psiprobe.controllers.dashboard.ModernDashboardController;
 import psiprobe.tools.Mailer;
 
 /**
@@ -399,6 +401,28 @@ public class ProbeConfig implements WebMvcConfigurer {
   @Bean(name = "multipartResolver")
   public StandardServletMultipartResolver multipartResolver() {
     return new StandardServletMultipartResolver();
+  }
+
+  /**
+   * Modern Dashboard Controller.
+   *
+   * @return the modern dashboard controller
+   */
+  @Bean(name = "/dashboard.htm")
+  public ModernDashboardController modernDashboardController() {
+    logger.debug("Instantiated modernDashboardController");
+    return new ModernDashboardController();
+  }
+
+  /**
+   * Dashboard AJAX Controller.
+   *
+   * @return the dashboard ajax controller
+   */
+  @Bean(name = "dashboardAjaxController")
+  public DashboardAjaxController dashboardAjaxController() {
+    logger.debug("Instantiated dashboardAjaxController");
+    return new DashboardAjaxController();
   }
 
 }

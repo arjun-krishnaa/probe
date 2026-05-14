@@ -1,0 +1,721 @@
+/* ============================================
+   PSI Probe Modern Dashboard CSS
+   Dark/Light Theme Support
+   ============================================ */
+
+:root {
+    /* Dark Theme (Default) */
+    --bg-primary: #0f1419;
+    --bg-secondary: #1a1f2e;
+    --bg-tertiary: #252d3d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --border-color: #30363d;
+    --accent-primary: #58a6ff;
+    --accent-success: #3fb950;
+    --accent-warning: #d29922;
+    --accent-danger: #f85149;
+    --shadow: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f6f8fa;
+    --bg-tertiary: #ffffff;
+    --text-primary: #24292f;
+    --text-secondary: #57606a;
+    --border-color: #d0d7de;
+    --accent-primary: #0969da;
+    --accent-success: #1a7f37;
+    --accent-warning: #9a6700;
+    --accent-danger: #cf222e;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.dashboard-body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ============================================
+   Theme Toggle
+   ============================================ */
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#themeToggle {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+#themeToggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+[data-theme="dark"] .icon-light { display: inline; }
+[data-theme="dark"] .icon-dark { display: none; }
+[data-theme="light"] .icon-light { display: none; }
+[data-theme="light"] .icon-dark { display: inline; }
+
+/* ============================================
+   Dashboard Container
+   ============================================ */
+
+.dashboard-container {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ============================================
+   Header
+   ============================================ */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.header-left h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.server-name {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.header-right {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.last-update, .auto-refresh {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.auto-refresh input {
+    margin-right: 5px;
+}
+
+/* ============================================
+   KPI Bar
+   ============================================ */
+
+.kpi-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.kpi-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.kpi-icon {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.kpi-content {
+    flex: 1;
+}
+
+.kpi-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.kpi-value {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.kpi-subtext {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.kpi-sparkline {
+    height: 30px;
+    margin-top: 8px;
+}
+
+.kpi-status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.kpi-status.healthy { background: var(--accent-success); }
+.kpi-status.warning { background: var(--accent-warning); }
+.kpi-status.critical { background: var(--accent-danger); }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ============================================
+   Alert Banner
+   ============================================ */
+
+.alert-banner {
+    background: var(--accent-danger);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideDown 0.3s ease;
+}
+
+.alert-banner.hidden {
+    display: none;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   Dashboard Grid
+   ============================================ */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+}
+
+.panel {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.panel:hover {
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.panel-large {
+    grid-column: span 8;
+}
+
+.panel-medium {
+    grid-column: span 4;
+}
+
+.panel-small {
+    grid-column: span 3;
+}
+
+@media (max-width: 1400px) {
+    .panel-large { grid-column: span 12; }
+    .panel-medium { grid-column: span 6; }
+}
+
+@media (max-width: 768px) {
+    .panel-large, .panel-medium, .panel-small {
+        grid-column: span 12;
+    }
+}
+
+/* ============================================
+   Panel Header
+   ============================================ */
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.panel-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    background: var(--bg-tertiary);
+    transform: scale(1.05);
+}
+
+/* ============================================
+   Memory Grid
+   ============================================ */
+
+.memory-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.memory-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.memory-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.progress-bar {
+    position: relative;
+    height: 28px;
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-success));
+    transition: width 0.5s ease, background 0.3s ease;
+    position: relative;
+}
+
+.progress-fill.warning {
+    background: linear-gradient(90deg, var(--accent-warning), var(--accent-danger));
+}
+
+.progress-fill.critical {
+    background: var(--accent-danger);
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* ============================================
+   Charts
+   ============================================ */
+
+.chart-container {
+    margin-top: 16px;
+    position: relative;
+}
+
+.chart-container canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+
+/* ============================================
+   GC Stats
+   ============================================ */
+
+.gc-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.stat-item {
+    background: var(--bg-tertiary);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+/* ============================================
+   Thread States
+   ============================================ */
+
+.thread-states {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.thread-state-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+}
+
+.state-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.state-dot.state-runnable { background: var(--accent-success); }
+.state-dot.state-blocked { background: var(--accent-danger); }
+.state-dot.state-waiting { background: var(--accent-warning); }
+.state-dot.state-timed-waiting { background: var(--accent-primary); }
+
+.state-label {
+    flex: 1;
+    font-size: 13px;
+}
+
+.state-count {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* ============================================
+   Connector List
+   ============================================ */
+
+.connector-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.connector-item {
+    background: var(--bg-tertiary);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.connector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.connector-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.connector-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.connector-status.running {
+    background: var(--accent-success);
+    color: white;
+}
+
+.connector-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.connector-stat {
+    text-align: center;
+}
+
+.connector-stat-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+}
+
+.connector-stat-value {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* ============================================
+   Application Table
+   ============================================ */
+
+.app-table {
+    overflow-x: auto;
+}
+
+#appTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#appTable thead th {
+    text-align: left;
+    padding: 10px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--border-color);
+}
+
+#appTable tbody td {
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 13px;
+}
+
+#appTable tbody tr:hover {
+    background: var(--bg-tertiary);
+}
+
+.app-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.app-status.running {
+    background: var(--accent-success);
+    color: white;
+}
+
+.app-status.stopped {
+    background: var(--accent-danger);
+    color: white;
+}
+
+/* ============================================
+   JDBC Pools
+   ============================================ */
+
+.jdbc-pools {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.jdbc-pool-item {
+    background: var(--bg-tertiary);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.jdbc-pool-name {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.jdbc-pool-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+/* ============================================
+   Slow Endpoints
+   ============================================ */
+
+.slow-endpoints {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.slow-endpoint-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    border-left: 3px solid var(--accent-warning);
+}
+
+.endpoint-path {
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.endpoint-time {
+    font-weight: 700;
+    color: var(--accent-warning);
+    font-size: 14px;
+}
+
+/* ============================================
+   System Stats
+   ============================================ */
+
+.system-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+/* ============================================
+   Loading Overlay
+   ============================================ */
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-overlay.hidden {
+    display: none;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--accent-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .kpi-bar {
+        grid-template-columns: 1fr;
+    }
+    
+    .gc-stats, .connector-stats, .jdbc-pool-stats, .system-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+.hidden {
+    display: none !important;
+}
+
+.text-success { color: var(--accent-success); }
+.text-warning { color: var(--accent-warning); }
+.text-danger { color: var(--accent-danger); }
+.text-primary { color: var(--accent-primary); }
