@@ -1,0 +1,65 @@
+#!/usr/bin/env groovy
+
+/**
+ * PSI Probe - Simplified Jenkins Pipeline
+ * 
+ * Quick build pipeline for PSI Probe with minimal configuration.
+ */
+
+pipeline {
+    agent any
+    
+    options {
+        timestamps()
+        timeout(time: 20, unit: 'MINUTES')
+    }
+    
+    environment {
+        JAVA_HOME  = '/usr/lib/jvm/java-17-amazon-corretto'
+        PATH       = "${JAVA_HOME}/bin:${env.PATH}"
+        MAVEN_HOME = '/usr/app/maven/maven-3.9.11'
+        MAVEN_CMD  = "${MAVEN_HOME}/bin/mvn"
+        MAVEN_REPO = "/usr/app/maven/repository"
+    }
+    
+    stages {
+        
+        stage('Build & Package') {
+            steps {
+                echo "Building PSI Probe..."
+                
+                sh """
+                    ${MAVEN_CMD} clean package \
+                        -Dmaven.repo.local=${MAVEN_REPO} \
+                        -DskipTests=false \
+                        -B
+                """
+            }
+        }
+        
+        stage('Archive') {
+            steps {
+                echo "Archiving artifacts..."
+                
+                // Archive WAR file
+                archiveArtifacts artifacts: 'psi-probe-web/target/probe.war', fingerprint: true
+                
+                // Publish test results
+                junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+            }
+        }
+        
+    }
+    
+    post {
+        always {
+            echo "Build finished: ${currentBuild.result ?: 'SUCCESS'}"
+        }
+        success {
+            echo "✓ Artifact available at: ${env.BUILD_URL}artifact/psi-probe-web/target/probe.war"
+        }
+        failure {
+            echo "✗ Build failed. Check logs: ${env.BUILD_URL}console"
+        }
+    }
+}
