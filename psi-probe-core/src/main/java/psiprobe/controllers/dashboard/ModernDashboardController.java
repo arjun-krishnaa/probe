@@ -50,8 +50,8 @@ public class ModernDashboardController extends AbstractTomcatContainerController
 
   @RequestMapping(path = "/dashboard.htm")
   @Override
-  public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
-      throws Exception {
+  protected ModelAndView handleRequestInternal(HttpServletRequest request,
+      HttpServletResponse response) throws Exception {
     
     ModelAndView mv = new ModelAndView(getViewName());
     

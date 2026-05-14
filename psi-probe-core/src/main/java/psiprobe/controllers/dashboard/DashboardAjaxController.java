@@ -263,7 +263,7 @@ public class DashboardAjaxController extends AbstractTomcatContainerController {
       List<Context> contexts = containerWrapper.getTomcatContainer().findContexts();
       
       for (Context context : contexts) {
-        Application app = ApplicationUtils.getApplication(context, containerWrapper.getResourceResolver());
+        Application app = ApplicationUtils.getApplication(context, containerWrapper);
         
         Map<String, Object> appData = new HashMap<>();
         appData.put("name", app.getName().isEmpty() ? "/" : app.getName());
@@ -364,7 +364,7 @@ public class DashboardAjaxController extends AbstractTomcatContainerController {
   }
 
   @Override
-  protected ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
+  protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
       throws Exception {
     // Not used - individual methods handle requests
     return null;
