@@ -401,26 +401,4 @@ public class ProbeConfig implements WebMvcConfigurer {
     return new StandardServletMultipartResolver();
   }
 
-  /**
-   * Modern Dashboard Controller.
-   *
-   * @return the modern dashboard controller
-   */
-  @Bean(name = "/dashboard.htm")
-  public ModernDashboardController modernDashboardController() {
-    logger.debug("Instantiated modernDashboardController");
-    return new ModernDashboardController();
-  }
-
-  /**
-   * Dashboard AJAX Controller.
-   *
-   * @return the dashboard ajax controller
-   */
-  @Bean(name = "dashboardAjaxController")
-  public DashboardAjaxController dashboardAjaxController() {
-    logger.debug("Instantiated dashboardAjaxController");
-    return new DashboardAjaxController();
-  }
-
 }
