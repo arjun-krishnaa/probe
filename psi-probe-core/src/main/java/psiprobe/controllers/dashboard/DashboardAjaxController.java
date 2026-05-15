@@ -34,7 +34,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import psiprobe.beans.ContainerWrapperBean;
 import psiprobe.controllers.AbstractTomcatContainerController;
 import psiprobe.model.Application;
 import psiprobe.tools.ApplicationUtils;
@@ -44,10 +43,6 @@ import psiprobe.tools.ApplicationUtils;
  */
 @Controller
 public class DashboardAjaxController extends AbstractTomcatContainerController {
-
-  /** The container wrapper. */
-  @Autowired
-  private ContainerWrapperBean containerWrapper;
 
   /** JSON object mapper. */
   private final ObjectMapper objectMapper = new ObjectMapper();
@@ -138,7 +133,7 @@ public class DashboardAjaxController extends AbstractTomcatContainerController {
     // Estimate max threads from connectors
     int maxThreads = 200; // Default
     try {
-      List<Connector> connectors = containerWrapper.getTomcatContainer().findConnectors();
+      List<Connector> connectors = getContainerWrapper().getTomcatContainer().findConnectors();
       maxThreads = connectors.stream()
           .mapToInt(c -> {
             Object maxThreadsObj = c.getProperty("maxThreads");
@@ -206,7 +201,7 @@ public class DashboardAjaxController extends AbstractTomcatContainerController {
     List<Map<String, Object>> connectorList = new ArrayList<>();
     
     try {
-      List<Connector> connectors = containerWrapper.getTomcatContainer().findConnectors();
+      List<Connector> connectors = getContainerWrapper().getTomcatContainer().findConnectors();
       
       for (Connector connector : connectors) {
         Map<String, Object> connectorData = new HashMap<>();
@@ -260,10 +255,10 @@ public class DashboardAjaxController extends AbstractTomcatContainerController {
     List<Map<String, Object>> appList = new ArrayList<>();
     
     try {
-      List<Context> contexts = containerWrapper.getTomcatContainer().findContexts();
+      List<Context> contexts = getContainerWrapper().getTomcatContainer().findContexts();
       
       for (Context context : contexts) {
-        Application app = ApplicationUtils.getApplication(context, containerWrapper);
+        Application app = ApplicationUtils.getApplication(context, getContainerWrapper());
         
         Map<String, Object> appData = new HashMap<>();
         appData.put("name", app.getName().isEmpty() ? "/" : app.getName());

@@ -52,8 +52,6 @@ import psiprobe.beans.LogResolverBean;
 import psiprobe.beans.ResourceResolver;
 import psiprobe.beans.ResourceResolverBean;
 import psiprobe.beans.RuntimeInfoAccessorBean;
-import psiprobe.controllers.dashboard.DashboardAjaxController;
-import psiprobe.controllers.dashboard.ModernDashboardController;
 import psiprobe.tools.Mailer;
 
 /**
