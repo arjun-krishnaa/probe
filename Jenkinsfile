@@ -146,13 +146,13 @@ pipeline {
                     def s3Folder = (env.IS_RELEASE.toBoolean()) ? "${env.PROD_FILEPATH}/${env.SAFE_BRANCH}" : "${env.NONPROD_FILEPATH}/${env.SAFE_BRANCH}"
 
                     sh """
-                        echo "Finding JAR file..."
-                        JAR_FILE=\$(find . -name "*.jar" | head -1)
+                        echo "Finding WAR file..."
+                        WAR_FILE=\$(find . -name "*.war" | head -1)
 
-                        echo "JAR found at: \$JAR_FILE"
+                        echo "WAR found at: \$WAR_FILE"
 
-                        echo "Uploading JAR to S3..."
-                        aws s3 cp "\$JAR_FILE" s3://${S3_BUCKET}/${s3Folder}/${versionStr}.jar
+                        echo "Uploading WAR to S3..."
+                        aws s3 cp "\$WAR_FILE" s3://${S3_BUCKET}/${s3Folder}/${versionStr}.war
                     """
                 }
             }
@@ -376,7 +376,7 @@ def getTriggeredUser() {
 
 // 🔔 Function: Send Teams notification via Power Automate
 def sendTeamsNotification(String status) {
-    withCredentials([string(credentialsId: 'POWER_AUTOMATE_URL', variable: 'WEBHOOK')]) {
+    withCredentials([string(credentialsId: 'teams-webhook-url', variable: 'WEBHOOK')]) {
         def payload = [
             project_name : env.JOB_NAME,
             build_status : status,
