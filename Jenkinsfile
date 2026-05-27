@@ -25,9 +25,9 @@ pipeline {
         PATH       = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${env.PATH}"
 
         MAVEN_REPO     = "/usr/app/maven/repository"
-        S3_BUCKET      = '28-feb-demo/'
+        S3_BUCKET      = '28-feb-demo/ezeebits/server/'
         AWS_REGION     = 'ap-south-1'
-        S3_SERVER_FILE = "ezeebits/server/versions/servers.json"   // object path within the bucket
+        S3_SERVER_FILE = "versions/servers-10.json"   // object path within the bucket
     }
 
     stages {
